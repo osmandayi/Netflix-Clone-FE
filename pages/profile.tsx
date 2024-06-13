@@ -2,7 +2,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import { PlusCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
 
 interface CardProps {
@@ -75,6 +75,16 @@ const CardNewUser = () => {
 const ProfilePage = () => {
   const router = useRouter();
   const user = useActiveUser();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth");
+    }
+  }, [router, user]);
+
+  if (!user) {
+    return null;
+  }
 
   const selectProfile = useCallback(() => {
     // localStorage.setItem("activeUser", JSON.stringify({ user: user }));

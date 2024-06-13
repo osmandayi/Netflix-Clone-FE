@@ -10,6 +10,7 @@ import movieMockData from "@/movie";
 import { NextPageContext } from "next";
 import { getSession, signOut } from "next-auth/react";
 import { Inter } from "next/font/google";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -46,6 +47,7 @@ const useActiveUser = () => {
 export default function Home() {
   const movies: Movie[] = movieMockData;
   const user = useActiveUser();
+  const router = useRouter();
 
   const { isOpen, closeModal } = useInfoModalStore();
   const [favoriteList, setFavoriteList] = useState<FavoriteListProps[]>([
@@ -55,6 +57,16 @@ export default function Home() {
     favoriteList.find((fl) => fl.user === user)?.favoriteIds ?? [];
 
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth");
+    }
+  }, [router, user]);
+
+  if (!user) {
+    return null;
+  }
 
   useEffect(() => {
     // İlk yüklemede localStorage'dan verileri al
