@@ -42,7 +42,10 @@ const AccountMenu: React.FC<AccountProps> = ({ visible = false, ImgSrc }) => {
       "
     >
       <div className="flex flex-col gap-3">
-        <div className="px-3 group flex flex-row gap-3 items-center w-full">
+        <div
+          className="px-3 group flex flex-row gap-3 items-center w-full"
+          onClick={() => router.push("/profile")}
+        >
           <img src={`/images/default-${ImgSrc}.png`} alt="" className="w-6" />
           <p className="cursor-pointer text-white text-lg hover:underline">
             {user}

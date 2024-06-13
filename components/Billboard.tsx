@@ -1,14 +1,21 @@
 import useBillboard from "@/hooks/useBillboard";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PlayButton from "./PlayButton";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import movieMockData from "@/movie";
 
 const Billboard = () => {
   const movies = movieMockData;
-  const randomIndex = Math.floor(Math.random() * movies.length);
+  const [randomIndex, setRandomIndex] = useState<number>(0); // State olarak randomIndex'i tanımla
+
+  useEffect(() => {
+    const index = Math.floor(Math.random() * movies.length);
+    setRandomIndex(index); // İlk render sonrasında randomIndex'i sabitle
+  }, []);
 
   const data = movies[randomIndex];
+
+  if (!data) return null; // İlk render sırasında data henüz gelmediyse null döndür
 
   return (
     <div className="relative h-[32rem] lg:h-[44rem]">
@@ -24,7 +31,7 @@ const Billboard = () => {
         <p className="text-4xl lg:text-6xl ml-6 lg:ml-9 font-bold">
           {data?.title}
         </p>
-        <p className="text-sm lg:text-md md:w-[70%] lg: w-[50%] ml-6 lg:ml-9 py-4 lg:py-8">
+        <p className="text-sm lg:text-md md:w-[70%] lg:w-[50%] ml-6 lg:ml-9 py-4 lg:py-8">
           {data?.description}
         </p>
         <div className="flex flex-row ml-6 lg:ml-9 items-center mt-5 md:mt-7 gap-3">
