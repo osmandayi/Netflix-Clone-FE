@@ -1,13 +1,12 @@
-import useMovie from "@/hooks/useMovie";
+"use client";
 import movieMockData from "@/movie";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
-import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React from "react";
 
 const Watch = () => {
   const router = useRouter();
-  const { movieId } = useParams();
+  const { movieId } = router.query; // router.query üzerinden movieId'yi al
 
   const movies = movieMockData;
 
