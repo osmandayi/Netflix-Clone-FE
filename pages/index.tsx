@@ -11,7 +11,8 @@ import { NextPageContext } from "next";
 import { getSession, signOut } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,20 +54,13 @@ export default function Home() {
   const [favoriteList, setFavoriteList] = useState<FavoriteListProps[]>([
     { user: "", favoriteIds: [""] },
   ]);
-  let favoriteIds =
-    favoriteList.find((fl) => fl.user === user)?.favoriteIds ?? [];
+
+  const favoriteIds = useMemo(() => {
+    return favoriteList.find((fl) => fl.user === user)?.favoriteIds ?? [];
+  }, [favoriteList, user]);
 
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([]);
-
-  useEffect(() => {
-    if (!user) {
-      router.push("/auth");
-    }
-  }, [router, user]);
-
-  if (!user) {
-    return null;
-  }
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // İlk yüklemede localStorage'dan verileri al
@@ -112,7 +106,6 @@ export default function Home() {
   useEffect(() => {
     setFavoriteMovies(movies.filter((movie) => favoriteIds.includes(movie.id)));
   }, [favoriteIds]);
-
   return (
     <>
       <main>

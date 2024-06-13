@@ -76,16 +76,6 @@ const ProfilePage = () => {
   const router = useRouter();
   const user = useActiveUser();
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/auth");
-    }
-  }, [router, user]);
-
-  if (!user) {
-    return null;
-  }
-
   const selectProfile = useCallback(() => {
     // localStorage.setItem("activeUser", JSON.stringify({ user: user }));
     localStorage.setItem("activeProfile", src);
